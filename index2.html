@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>three.js webgl - multiple canvases - grid</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<style>
+		body { margin: 0; }
+    canvas { width: 500px; 
+		height: 500px }
+	
+	</style>
+</head>
+
+<body>
+	
+	<div id="info"><a href="http://threejs.org" target="_blank" rel="noopener">Promod Kumar Pandey</a></div>
+	<script src="./three.js"></script>
+	<script>
+
+var _width = 800;
+var _height = 800;
+/* To display anything, need a scene, a camera, and renderer */
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(90,_width/_height, 0.1, 1000);
+camera.position.z = _width;
+camera.position.y = - _width;
+camera.position.x = _width;
+
+var renderer = new THREE.WebGLRenderer();
+ renderer.setSize( _width, _height );
+document.body.appendChild( renderer.domElement );
+
+geometry = new THREE.Geometry();
+geometry.vertices.push(new THREE.Vector3(1, 1, 1));
+material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+line = new THREE.Line(geometry, material);
+scene.add(line);
+
+var render = function() {
+  renderer.render(scene, camera);
+}
+
+var animate = function() {
+  requestAnimationFrame( animate );
+	render();  
+};
+
+animate();
+var mouse = {x:0, y:0};
+window.addEventListener('mousedown', function(e) {
+  mouse.x = typeof e.offsetX !== 'undefined' ? e.offsetX : e.layerX;
+  mouse.y = typeof e.offsetY !== 'undefined' ? e.offsetY : e.layerY;
+  console.log(mouse.x, -mouse.y); 
+  geometry = new THREE.Geometry();
+	geometry.vertices.push(new THREE.Vector3(110, 110, 0));
+	geometry.vertices.push(new THREE.Vector3(mouse.x, -mouse.y, 0));
+	line = new THREE.Line(geometry, material);
+	scene.add(line);
+});
+
+// document.addEventListener('mouseup', function(e){
+// 	mouse.x = typeof e.offsetX !== 'undefined' ? e.offsetX : e.layerX;
+//   mouse.y = typeof e.offsetY !== 'undefined' ? e.offsetY : e.layerY;
+// 	console.log(mouse.x, -mouse.y);
+// })            
+	</script>
+</body>
+
+</html>
